@@ -1,7 +1,6 @@
 
 package com.company;
 
-import java.util.Scanner;
 
 public class Main {
 
@@ -16,9 +15,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Triangle myTriangle = createTriangleThoughSideAndTwoCorners(10,70,30);
+        Triangle myTriangle = createTriangleThoughSideAndTwoCorners(9,70,30);
         myTriangle.getTriangleInfo();
-        Triangle myTriangle2 = createTriangleThoughSideAndTwoCorners(5,30,70);
+        Triangle myTriangle2 = createTriangleThoughSideAndTwoCorners(6,30,70);
         myTriangle2.getTriangleInfo();
         myTriangle2.getIsSimilar(myTriangle);
     }

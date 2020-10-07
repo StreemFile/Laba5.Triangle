@@ -1,7 +1,6 @@
 
 package com.company;
 
-import java.util.Scanner;
 
 /**
  * Created by IntelliJ IDEA.
@@ -147,7 +146,6 @@ public class Triangle {
             Math.toDegrees(this.getGammaCorner()) > 90;}
 
     public void getTriangleType(){
-
         System.out.print("Цей трикутник є ");
         if(this.isRight()) { System.out.print("прямокутним "); }
         if(this.isEquilateral()) { System.out.print("рівностороннім "); }
@@ -160,7 +158,7 @@ public class Triangle {
 
     public double getPerimeter(){
         double perimeter = 0;
-        if(this.isValid) {
+        if(this.isValid()) {
             perimeter = this.getSideA() + this.getSideB() + this.getSideC();
         }
         else{
@@ -171,7 +169,7 @@ public class Triangle {
     public double getArea(){
         double area = 0;
         double halfPerimeter = this.getPerimeter()/2;
-        if(this.isValid) {
+        if(this.isValid()) {
             area = Math.sqrt(halfPerimeter * (halfPerimeter - this.getSideA()) *
                     (halfPerimeter - this.getSideB()) * (halfPerimeter - this.getSideC()));
         }
@@ -182,7 +180,7 @@ public class Triangle {
     }
     public double getInscribedCircle(){
         double inscribedCircle = 0;
-        if(this.isValid) {
+        if(this.isValid()) {
             inscribedCircle = getArea()/(getPerimeter()/2);
         }
         else{
@@ -192,7 +190,7 @@ public class Triangle {
     }
     public double getDescribedCircle(){
         double describedCircle = 0;
-        if(this.isValid) {
+        if(this.isValid()) {
             describedCircle = (this.getSideA()*this.getSideB()*this.getSideC())/(4*getArea());
         }
         else{
@@ -202,7 +200,7 @@ public class Triangle {
     }
     public double getMiddleLine(double side){
         double middleLine = 0;
-        if(this.isValid) {
+        if(this.isValid()) {
             middleLine = side/2;
         }
         else{
@@ -212,7 +210,7 @@ public class Triangle {
     }
     public double getHeight(double side){
         double height = 0;
-        if(this.isValid) {
+        if(this.isValid()) {
             height = (2*this.getArea())/side;
         }
         else{
@@ -222,7 +220,7 @@ public class Triangle {
     }
     public double getMedian(double side){
         double median = 0;
-        if(isValid) {
+        if(this.isValid()) {
             if (side == this.getSideA()) {
                 median = Math.sqrt(2 * this.getSideB() * this.getSideB() +
                         2 * this.getSideC() * this.getSideC() - this.getSideA() * this.getSideA()) / 2;
@@ -243,7 +241,7 @@ public class Triangle {
         double bisector = 0;
 
         double halfPerimeter = this.getPerimeter()/2;
-        if(isValid) {
+        if(this.isValid()) {
             if (side == this.getSideA()) {
                 bisector = (2 * Math.sqrt(this.getSideB() * this.getSideC() * halfPerimeter *
                         (halfPerimeter - this.getSideA()))) / (this.getSideB() + this.getSideC());
@@ -262,7 +260,7 @@ public class Triangle {
     }
 
     public void getTriangleInfo(){
-        if(this.isValid) {
+        if(this.isValid()) {
             String sidesAndCornersInfo = this.toString();
             System.out.println(sidesAndCornersInfo);
             this.getTriangleType();
@@ -289,16 +287,41 @@ public class Triangle {
         System.out.println();
     }
     public void getIsSimilar(Triangle otherTriangle){
-
-        if(this.isSimilar(otherTriangle)){
-           double coefficient =  this.getPerimeter() > otherTriangle.getPerimeter() ? this.getPerimeter()/otherTriangle.getPerimeter() :  otherTriangle.getPerimeter()/this.getPerimeter();
-            System.out.println("Трикутники подібні з відношенням 1:" + Math.round(coefficient));
-        }
-        else{
+    if(this.isValid() && otherTriangle.isValid()) {
+        if (this.isSimilar(otherTriangle)) {
+            System.out.println("Трикутники подібні з відношенням " + getRatio(otherTriangle));
+        } else {
             System.out.println("Трикутники не подібні.");
         }
     }
-
+    else System.out.println("Неможливо порівняти оскільки один з трикутникіи не існує.");
+    }
+    public String getRatio(Triangle otherTriangle){
+        double firstTriangleSide = this.getSideC();
+        double secondTriangleSide = otherTriangle.getSideC();
+        while ((firstTriangleSide % 2 == 0  && secondTriangleSide % 2 == 0) ||
+                (firstTriangleSide % 3 == 0  && secondTriangleSide % 3 == 0) ||
+                (firstTriangleSide % 5 == 0  && secondTriangleSide % 5 == 0) ||
+                (firstTriangleSide % 7 == 0  && secondTriangleSide % 7 == 0)){
+            if(firstTriangleSide % 2 == 0  && secondTriangleSide % 2 == 0){
+                firstTriangleSide /= 2;
+                secondTriangleSide /=2;
+            }
+            else if(firstTriangleSide % 3 == 0  && secondTriangleSide % 3 == 0){
+                firstTriangleSide /= 3;
+                secondTriangleSide /=3;
+            }
+            else if(firstTriangleSide % 5 == 0  && secondTriangleSide % 5 == 0){
+                firstTriangleSide /= 5;
+                secondTriangleSide /=5;
+            }
+            else{
+                firstTriangleSide /= 7;
+                secondTriangleSide /=7;
+            }
+        }
+       return (int)firstTriangleSide + ":" + (int)secondTriangleSide;
+    }
 //public boolean isSimilar(Triangle otherTriangle){
 //    boolean isSimilar = false;
 //    if(this.isValid && otherTriangle.isValid) {
@@ -315,40 +338,6 @@ public class Triangle {
 //    }
 //    return isSimilar;
 //}
-//    public boolean isSimilar(Triangle otherTriangle){
-//        boolean isSimilar = false;
-//        if(this.getAlphaCorner() == otherTriangle.getAlphaCorner() &&
-//                this.getBetaCorner() == otherTriangle.getBetaCorner() &&
-//                this.getGammaCorner() == otherTriangle.getGammaCorner()) {
-//            isSimilar = true;
-//        }
-//        else if (this.getAlphaCorner() == otherTriangle.getAlphaCorner() &&
-//                this.getBetaCorner() == otherTriangle.getGammaCorner() &&
-//                this.getGammaCorner() == otherTriangle.getBetaCorner()){
-//            isSimilar = true;
-//        }
-//        else if (this.getAlphaCorner() == otherTriangle.getBetaCorner() &&
-//                this.getBetaCorner() == otherTriangle.getAlphaCorner() &&
-//                this.getGammaCorner() == otherTriangle.getGammaCorner()){
-//            isSimilar = true;
-//        }
-//        else if (this.getAlphaCorner() == otherTriangle.getBetaCorner() &&
-//                this.getBetaCorner() == otherTriangle.getGammaCorner() &&
-//                this.getGammaCorner() == otherTriangle.getAlphaCorner()){
-//            isSimilar = true;
-//        }
-//        else if (this.getAlphaCorner() == otherTriangle.getGammaCorner() &&
-//                this.getBetaCorner() == otherTriangle.getAlphaCorner() &&
-//                this.getGammaCorner() == otherTriangle.getBetaCorner()){
-//            isSimilar = true;
-//        }
-//        else if (this.getAlphaCorner() == otherTriangle.getGammaCorner() &&
-//                this.getBetaCorner() == otherTriangle.getBetaCorner() &&
-//                this.getGammaCorner() == otherTriangle.getAlphaCorner()){
-//            isSimilar = true;
-//        }
-//        return isSimilar;
-//    }
 
     public boolean isSimilar(Triangle otherTriangle){
         boolean isSimilar = false;
