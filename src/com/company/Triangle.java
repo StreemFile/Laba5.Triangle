@@ -13,189 +13,229 @@ import java.util.Scanner;
  */
 
 public class Triangle {
-    private double aSide;
-    private double bSide;
-    private double cSide;
-
-    private double alphaCorner;
-    private double betaCorner;
-    private double gammaCorner;
-
+    private double sideA;
+    private double sideB;
+    private double sideC;
+    private boolean isValid;
     public Triangle() {
     }
 
-    public Triangle(double aSide, double bSide, double cSide) {
+    public Triangle(double sideA, double sideB, double sideC) {
 
-        this.aSide = aSide;
-        this.bSide = bSide;
-        this.cSide = cSide;
-        this.checkSides();
-        this.alphaCorner = this.countAlphaCorner();
-        this.betaCorner = this.countBetaCorner();
-        this.gammaCorner = this.countGammaCorner();
+        this.sideA = sideA;
+        this.sideB = sideB;
+        this.sideC = sideC;
+        this.isValid = this.isValidSide();
+
     }
 
-    public Triangle(double bSide, double cSide, int alphaCorner) {
-        this.bSide = bSide;
-        this.cSide = cSide;
-        this.alphaCorner = Math.toRadians(alphaCorner);
-        this.aSide = this.getThirdSide();
-        this.betaCorner = this.countBetaCorner();
-        this.gammaCorner = this.countGammaCorner();
+    public Triangle(double sideB, double sideC, float alphaCorner) {
+        this.sideB = sideB;
+        this.sideC = sideC;
+        this.sideA = this.getThirdSide((float) Math.toRadians(alphaCorner));
+        this.isValid = this.isValidCorner(alphaCorner);
     }
 
-    public Triangle(double cSide, int alphaCorner, int betaCorner) {
-        this.cSide = cSide;
-        this.alphaCorner = Math.toRadians(alphaCorner);
-        this.betaCorner = Math.toRadians(betaCorner);
-        this.gammaCorner = Math.toRadians(180 - betaCorner - alphaCorner);
-        this.checkCorners();
-        this.bSide = getSecondSide();
-        this.aSide = getThirdSide();
+    public Triangle(double sideC, float alphaCorner, float betaCorner) {
+        this.sideC = sideC;
+        this.sideB = getSecondSide((float) Math.toRadians(betaCorner), (float) Math.toRadians(180 - alphaCorner - betaCorner));
+        this.sideA = getThirdSide((float) Math.toRadians(alphaCorner));
+        this.isValid = this.isValidCorner(alphaCorner,betaCorner);
     }
 
-    public double countAlphaCorner(){
-        return Math.acos((this.getBSide()*this.getBSide()+this.getCSide()*this.getCSide()-
-                this.getASide()*this.getASide())/(2*this.getBSide()*this.getCSide()));
+    public double getAlphaCorner(){
+        return Math.acos((this.getSideB()*this.getSideB()+this.getSideC()*this.getSideC()-
+                this.getSideA()*this.getSideA())/(2*this.getSideB()*this.getSideC()));
     }
-    public double countBetaCorner(){
-        return Math.acos((this.getASide()*this.getASide()+this.getCSide()*this.getCSide()-
-                this.getBSide()*this.getBSide())/(2*this.getASide()*this.getCSide()));
+    public double getBetaCorner(){
+        return Math.acos((this.getSideA()*this.getSideA()+this.getSideC()*this.getSideC()-
+                this.getSideB()*this.getSideB())/(2*this.getSideA()*this.getSideC()));
     }
-    public double countGammaCorner(){
-        return Math.acos((this.getBSide()*this.getBSide()+this.getASide()*this.getASide()-
-                this.getCSide()*this.getCSide())/(2*this.getBSide()*this.getASide()));
-    }
-
-
-    public double getASide() {
-        return aSide;
+    public double getGammaCorner(){
+        return Math.acos((this.getSideB()*this.getSideB()+this.getSideA()*this.getSideA()-
+                this.getSideC()*this.getSideC())/(2*this.getSideB()*this.getSideA()));
     }
 
-    public void setASide(double aSide) {
-        this.aSide = aSide;
+    public double getSideA() {
+        return sideA;
     }
 
-    public double getBSide() {
-        return bSide;
+    public void setSideA(double sideA) {
+        this.sideA = sideA;
+        if(!this.isValidSide()) this.setValid(false);
     }
 
-    public void setBSide(double bSide) {
-        this.bSide = bSide;
+    public double getSideB() {
+        return sideB;
     }
 
-    public double getCSide() {
-        return cSide;
+    public void setSideB(double sideB) {
+        this.sideB = sideB;
+        if(!this.isValidSide()) this.setValid(false);
     }
 
-    public void setCSide(double cSide) {
-        this.cSide = cSide;
+    public double getSideC() {
+        return sideC;
     }
 
-    public double getAlphaCorner() {
-        return Math.toDegrees(alphaCorner);
+    public void setSideC(double sideC) {
+        this.sideC = sideC;
+        if(!this.isValidSide()) this.setValid(false);
     }
 
-    public void setAlphaCorner(double alphaCorner) {
-        this.alphaCorner = Math.toRadians(alphaCorner);
+    public boolean isValid() {
+        return isValid;
     }
 
-    public double getBetaCorner() {
-        return Math.toDegrees(betaCorner);
+    public void setValid(boolean valid) {
+        isValid = valid;
     }
 
-    public void setBetaCorner(double betaCorner) {
-        this.betaCorner = Math.toRadians(betaCorner);
+    public double getThirdSide(float alphaCorner){
+        return Math.sqrt(Math.pow(this.sideB,2) + Math.pow(this.sideC,2) - 2 * this.sideB *
+                this.sideC * Math.cos(alphaCorner));
     }
 
-    public double getGammaCorner() {
-        return Math.toDegrees(gammaCorner);
+    public double getSecondSide(float betaCorner, float gammaCorner){
+        return this.sideC*Math.sin(betaCorner)/Math.sin(gammaCorner);
     }
 
-    public void setGammaCorner(double gammaCorner) {
-        this.gammaCorner = Math.toRadians(gammaCorner);
-    }
-
-
-    public double getThirdSide(){
-        return Math.sqrt(Math.pow(this.bSide,2) + Math.pow(this.cSide,2) - 2 * this.bSide *
-                this.cSide * Math.cos(this.alphaCorner));
-    }
-
-    public double getSecondSide(){
-        return this.cSide*Math.sin(this.betaCorner)/Math.sin(this.gammaCorner);
-    }
-    public void getTriangleType(){
-
-        System.out.print("Цей трикутник є ");
-        if(this.isRight()) { System.out.print("прямокутним трикутником."); }
-        else if(this.isEquilateral()) { System.out.print("рівностороннім "); }
-        else if(this.isIsosceles()) { System.out.print("рівнобедреним "); }
-        else if(this.isScalene()) { System.out.print("різностороннім "); }
-        if(this.isAcute()){ System.out.print("гострокутним трикутником."); }
-        else if(this.isObtuse()){ System.out.print("тупокутним трикутником."); }
-        System.out.println();
-    }
-
-
-    public void checkSides(){
-        Scanner in = new Scanner(System.in);
-        if (this.getASide() + this.getBSide() < this.getCSide() ||
-                this.getBSide() + this.getCSide() < this.getASide() ||
-                this.getASide() + this.getCSide() < this.getBSide()) {
-            System.out.println("Невірно задані сторони трикутника. Задайте нові данні: ");
-            System.out.println("Сторона а: ");
-            this.setASide(in.nextDouble());
-            System.out.println("Сторона b: ");
-            this.setBSide(in.nextDouble());
-            System.out.println("Сторона c: ");
-            this.setCSide(in.nextDouble());
-            this.checkSides();
+    public boolean isValidCorner(float cornerAlpha){
+        boolean isValid = true;
+        if(cornerAlpha>= 180 || cornerAlpha <= 0) {
+            System.out.println("Трикутник з заданим кутом не існує");
+            isValid = false;
         }
-    }
-    public void checkCorners(){
-        Scanner in = new Scanner(System.in);
-        if(this.getAlphaCorner() + this.getBetaCorner() >= 180 ||
-        this.getAlphaCorner() == 0 || this.getBetaCorner() == 0) {
-            System.out.println("Невірно задані кути. Введіть нові данні:");
-            System.out.println("Введіть кут альфа: ");
-            this.setAlphaCorner(in.nextDouble());
-            System.out.println("Введіть кут бетта: ");
-            this.setBetaCorner(in.nextDouble());
-            this.checkCorners();
-        }
+        return isValid;
     }
 
-    public boolean isRight(){return this.getAlphaCorner() == 90 || this.getBetaCorner() == 90 || this.getGammaCorner() == 90;}
+    public boolean isValidCorner(float cornerAlpha, float cornerBeta){
+        boolean isValid = true;
+        if(cornerAlpha + cornerBeta >= 180 ||
+                cornerAlpha <= 0 || cornerBeta <= 0 ) {
+            System.out.println("Трикутник з заданими кутами не існує.");
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    public boolean isValidSide(){
+    boolean isValid = true;
+        if (this.getSideA() + this.getSideB() < this.getSideC() ||
+                this.getSideB() + this.getSideC() < this.getSideA() ||
+                this.getSideA() + this.getSideC() < this.getSideB()) {
+            System.out.println("Трикутник з заданими сторонами не існує.");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    public boolean isRight(){
+        return Math.round(Math.toDegrees(this.getAlphaCorner())) == 90 ||
+                Math.round(Math.toDegrees(this.getBetaCorner())) == 90 ||
+                Math.round(Math.toDegrees(this.getGammaCorner())) == 90;
+    }
     public boolean isEquilateral(){return this.getAlphaCorner() == this.getBetaCorner() && this.getBetaCorner() == this.getGammaCorner();}
     public boolean isIsosceles(){return this.getAlphaCorner() == this.getBetaCorner() || this.getBetaCorner() == this.getGammaCorner() || this.getAlphaCorner() == this.getGammaCorner();}
     public boolean isScalene(){return this.getAlphaCorner() != this.getBetaCorner() && this.getBetaCorner() != this.getGammaCorner() && this.getAlphaCorner() != this.getGammaCorner();}
-    public boolean isAcute(){return this.getAlphaCorner() < 90 && this.getBetaCorner() < 90 && this.getGammaCorner() < 90;}
-    public boolean isObtuse(){return this.getAlphaCorner() > 90 || this.getBetaCorner() > 90 || this.getGammaCorner() > 90;}
+    public boolean isAcute(){return Math.toDegrees(this.getAlphaCorner()) < 90 &&
+            Math.toDegrees(this.getBetaCorner()) < 90 &&
+            Math.toDegrees(this.getGammaCorner()) < 90;}
+    public boolean isObtuse(){return Math.toDegrees(this.getAlphaCorner()) > 90 ||
+            Math.toDegrees(this.getBetaCorner()) > 90 ||
+            Math.toDegrees(this.getGammaCorner()) > 90;}
 
-    public double getPerimeter(){ return this.getASide() + this.getBSide() + this.getCSide(); }
-    public double getArea(){
-        double halfPerimeter = this.getPerimeter()/2;
-        return Math.sqrt(halfPerimeter*(halfPerimeter-this.getASide())*
-                (halfPerimeter-this.getBSide())*(halfPerimeter-this.getCSide()));
+    public void getTriangleType(){
+
+        System.out.print("Цей трикутник є ");
+        if(this.isRight()) { System.out.print("прямокутним "); }
+        if(this.isEquilateral()) { System.out.print("рівностороннім "); }
+        else if(this.isIsosceles()) { System.out.print("рівнобедреним "); }
+        else if(this.isScalene()) { System.out.print("різностороннім "); }
+        if(this.isObtuse()){ System.out.print("тупокутним трикутником."); }
+        else if(this.isAcute()){ System.out.print("гострокутним трикутником."); }
+        System.out.println();
     }
-    public double getInscribedCircle(){ return getArea()/(getPerimeter()/2); }
-    public double getDescribedCircle(){ return (this.getASide()*this.getBSide()*this.getCSide())/(4*getArea()); }
-    public double getMiddleLine(double side){ return side/2; }
-    public double getHeight(double side){ return (2*this.getArea())/side; }
-    public double getMedian(double side){
-        double median = 0;
-        if(side == this.getASide()) {
-            median = Math.sqrt(2*this.getBSide()*this.getBSide() +
-                    2*this.getCSide()*this.getCSide() - this.getASide()*this.getASide())/2;
-        }
-        else if(side == this.getBSide()){
-            median = Math.sqrt(2*this.getASide()*this.getASide() +
-                    2*this.getCSide()*this.getCSide() - this.getBSide()*this.getBSide())/2;
+
+    public double getPerimeter(){
+        double perimeter = 0;
+        if(this.isValid) {
+            perimeter = this.getSideA() + this.getSideB() + this.getSideC();
         }
         else{
-           median = Math.sqrt(2*this.getBSide()*this.getBSide() +
-                   2*this.getASide()*this.getASide() - this.getCSide()*this.getCSide())/2;
+            System.out.println("Неможливо розрахувати периметр оскільки трикутник не існує.");
+        }
+        return perimeter;
+    }
+    public double getArea(){
+        double area = 0;
+        double halfPerimeter = this.getPerimeter()/2;
+        if(this.isValid) {
+            area = Math.sqrt(halfPerimeter * (halfPerimeter - this.getSideA()) *
+                    (halfPerimeter - this.getSideB()) * (halfPerimeter - this.getSideC()));
+        }
+        else{
+            System.out.println("Неможливо розрахувати площу оскільки трикутник не існує.");
+        }
+        return area;
+    }
+    public double getInscribedCircle(){
+        double inscribedCircle = 0;
+        if(this.isValid) {
+            inscribedCircle = getArea()/(getPerimeter()/2);
+        }
+        else{
+            System.out.println("Неможливо розрахувати радіус вписаного кола оскільки трикутник не існує.");
+        }
+        return inscribedCircle;
+    }
+    public double getDescribedCircle(){
+        double describedCircle = 0;
+        if(this.isValid) {
+            describedCircle = (this.getSideA()*this.getSideB()*this.getSideC())/(4*getArea());
+        }
+        else{
+            System.out.println("Неможливо розрахувати радіус описаного кола оскільки трикутник не існує.");
+        }
+        return describedCircle;
+    }
+    public double getMiddleLine(double side){
+        double middleLine = 0;
+        if(this.isValid) {
+            middleLine = side/2;
+        }
+        else{
+            System.out.println("Неможливо розрахувати середню лінію оскільки трикутник не існує.");
+        }
+        return middleLine;
+    }
+    public double getHeight(double side){
+        double height = 0;
+        if(this.isValid) {
+            height = (2*this.getArea())/side;
+        }
+        else{
+            System.out.println("Неможливо розрахувати висоту оскільки трикутник не існує.");
+        }
+        return height;
+    }
+    public double getMedian(double side){
+        double median = 0;
+        if(isValid) {
+            if (side == this.getSideA()) {
+                median = Math.sqrt(2 * this.getSideB() * this.getSideB() +
+                        2 * this.getSideC() * this.getSideC() - this.getSideA() * this.getSideA()) / 2;
+            } else if (side == this.getSideB()) {
+                median = Math.sqrt(2 * this.getSideA() * this.getSideA() +
+                        2 * this.getSideC() * this.getSideC() - this.getSideB() * this.getSideB()) / 2;
+            } else {
+                median = Math.sqrt(2 * this.getSideB() * this.getSideB() +
+                        2 * this.getSideA() * this.getSideA() - this.getSideC() * this.getSideC()) / 2;
+            }
+        }
+        else{
+            System.out.println("Неможливо розрахувати медіану оскільки трикутник не існує.");
         }
         return median;
     }
@@ -203,51 +243,147 @@ public class Triangle {
         double bisector = 0;
 
         double halfPerimeter = this.getPerimeter()/2;
-        if(side == this.getASide()) {
-            bisector = (2*Math.sqrt(this.getBSide()*this.getCSide()*halfPerimeter*
-                    (halfPerimeter-this.getASide()))) / (this.getBSide() + this.getCSide());
-        }
-        else if(side == this.getBSide()){
-            bisector = (2*Math.sqrt(this.getASide()*this.getCSide()*halfPerimeter*
-                    (halfPerimeter-this.getBSide()))) / (this.getASide() + this.getCSide());
+        if(isValid) {
+            if (side == this.getSideA()) {
+                bisector = (2 * Math.sqrt(this.getSideB() * this.getSideC() * halfPerimeter *
+                        (halfPerimeter - this.getSideA()))) / (this.getSideB() + this.getSideC());
+            } else if (side == this.getSideB()) {
+                bisector = (2 * Math.sqrt(this.getSideA() * this.getSideC() * halfPerimeter *
+                        (halfPerimeter - this.getSideB()))) / (this.getSideA() + this.getSideC());
+            } else {
+                bisector = (2 * Math.sqrt(this.getSideA() * this.getSideB() * halfPerimeter *
+                        (halfPerimeter - this.getSideC()))) / (this.getSideA() + this.getSideB());
+            }
         }
         else{
-            bisector = (2*Math.sqrt(this.getASide()*this.getBSide()*halfPerimeter*
-                    (halfPerimeter-this.getCSide()))) / (this.getASide() + this.getBSide());
+            System.out.println("Неможливо розрахувати бісектрису оскільки трикутник не існує.");
         }
         return bisector;
     }
 
     public void getTriangleInfo(){
-        String SidesAndCornersInfo = this.toString();
-        System.out.println(SidesAndCornersInfo);
-        this.getTriangleType();
-        System.out.println(String.format("Периметр трикутника: %.2f", this.getPerimeter()) +
-                String.format("\nПлоща трикутника: %.2f", this.getArea()) +
-                String.format("\nРадіус вписаного кола в трикутник: %.2f", this.getInscribedCircle()) +
-                String.format("\nРадіус описаного кола в трикутник: %.2f", this.getDescribedCircle()) +
-                String.format("\nСередня лінія навпроти сторони a: %.2f", this.getMiddleLine(this.getASide())) +
-                String.format("\nСередня лінія навпроти сторони b: %.2f", this.getMiddleLine(this.getBSide())) +
-                String.format("\nСередня лінія навпроти сторони c: %.2f", this.getMiddleLine(this.getCSide())) +
-                String.format("\nВисота опущена з вершини а: %.2f", this.getHeight(this.getASide())) +
-                String.format("\nВисота опущена з вершини b: %.2f", this.getHeight(this.getBSide())) +
-                String.format("\nВисота опущена з вершини а: %.2f", this.getHeight(this.getCSide())) +
-                String.format("\nМедіана опущена з вершини а: %.2f", this.getMedian(this.getASide())) +
-                String.format("\nМедіана опущена з вершини b: %.2f", this.getMedian(this.getBSide())) +
-                String.format("\nМедіана опущена з вершини c: %.2f", this.getMedian(this.getCSide())) +
-                String.format("\nБісектриса опущена з вершини а: %.2f", this.getBisector(this.getASide())) +
-                String.format("\nБісектриса опущена з вершини b: %.2f", this.getBisector(this.getBSide())) +
-                String.format("\nБісектриса опущена з вершини c: %.2f", this.getBisector(this.getCSide())));
+        if(this.isValid) {
+            String sidesAndCornersInfo = this.toString();
+            System.out.println(sidesAndCornersInfo);
+            this.getTriangleType();
+            System.out.println(String.format("Периметр трикутника: %.2f", this.getPerimeter()) +
+                    String.format("\nПлоща трикутника: %.2f", this.getArea()) +
+                    String.format("\nРадіус вписаного кола в трикутник: %.2f", this.getInscribedCircle()) +
+                    String.format("\nРадіус описаного кола в трикутник: %.2f", this.getDescribedCircle()) +
+                    String.format("\nСередня лінія навпроти сторони a: %.2f", this.getMiddleLine(this.getSideA())) +
+                    String.format("\nСередня лінія навпроти сторони b: %.2f", this.getMiddleLine(this.getSideB())) +
+                    String.format("\nСередня лінія навпроти сторони c: %.2f", this.getMiddleLine(this.getSideC())) +
+                    String.format("\nВисота опущена з вершини а: %.2f", this.getHeight(this.getSideA())) +
+                    String.format("\nВисота опущена з вершини b: %.2f", this.getHeight(this.getSideB())) +
+                    String.format("\nВисота опущена з вершини а: %.2f", this.getHeight(this.getSideC())) +
+                    String.format("\nМедіана опущена з вершини а: %.2f", this.getMedian(this.getSideA())) +
+                    String.format("\nМедіана опущена з вершини b: %.2f", this.getMedian(this.getSideB())) +
+                    String.format("\nМедіана опущена з вершини c: %.2f", this.getMedian(this.getSideC())) +
+                    String.format("\nБісектриса опущена з вершини а: %.2f", this.getBisector(this.getSideA())) +
+                    String.format("\nБісектриса опущена з вершини b: %.2f", this.getBisector(this.getSideB())) +
+                    String.format("\nБісектриса опущена з вершини c: %.2f", this.getBisector(this.getSideC())));
+        }
+        else{
+            System.out.println("Неможливо вивести інформацію оскільки трикутник не існує.");
+        }
+        System.out.println();
     }
+    public void getIsSimilar(Triangle otherTriangle){
+
+        if(this.isSimilar(otherTriangle)){
+           double coefficient =  this.getPerimeter() > otherTriangle.getPerimeter() ? this.getPerimeter()/otherTriangle.getPerimeter() :  otherTriangle.getPerimeter()/this.getPerimeter();
+            System.out.println("Трикутники подібні з відношенням 1:" + Math.round(coefficient));
+        }
+        else{
+            System.out.println("Трикутники не подібні.");
+        }
+    }
+
+//public boolean isSimilar(Triangle otherTriangle){
+//    boolean isSimilar = false;
+//    if(this.isValid && otherTriangle.isValid) {
+//        if (this.getPerimeter() > otherTriangle.getPerimeter()) {
+//            System.out.println((Math.round((this.getPerimeter() / otherTriangle.getPerimeter()) * 1000.0) / 1000.0));
+//            if ((Math.round((this.getPerimeter() / otherTriangle.getPerimeter()) * 1000.0) / 1000.0) % 1 == 0)
+//                isSimilar = true;
+//        } else {
+//            if ((Math.round((otherTriangle.getPerimeter() % this.getPerimeter()) * 1000.0) / 1000.0)  % 1 == 0)
+//                isSimilar = true;
+//        }
+//    } else {
+//        System.out.println("Один з трикутників не існує.");
+//    }
+//    return isSimilar;
+//}
+//    public boolean isSimilar(Triangle otherTriangle){
+//        boolean isSimilar = false;
+//        if(this.getAlphaCorner() == otherTriangle.getAlphaCorner() &&
+//                this.getBetaCorner() == otherTriangle.getBetaCorner() &&
+//                this.getGammaCorner() == otherTriangle.getGammaCorner()) {
+//            isSimilar = true;
+//        }
+//        else if (this.getAlphaCorner() == otherTriangle.getAlphaCorner() &&
+//                this.getBetaCorner() == otherTriangle.getGammaCorner() &&
+//                this.getGammaCorner() == otherTriangle.getBetaCorner()){
+//            isSimilar = true;
+//        }
+//        else if (this.getAlphaCorner() == otherTriangle.getBetaCorner() &&
+//                this.getBetaCorner() == otherTriangle.getAlphaCorner() &&
+//                this.getGammaCorner() == otherTriangle.getGammaCorner()){
+//            isSimilar = true;
+//        }
+//        else if (this.getAlphaCorner() == otherTriangle.getBetaCorner() &&
+//                this.getBetaCorner() == otherTriangle.getGammaCorner() &&
+//                this.getGammaCorner() == otherTriangle.getAlphaCorner()){
+//            isSimilar = true;
+//        }
+//        else if (this.getAlphaCorner() == otherTriangle.getGammaCorner() &&
+//                this.getBetaCorner() == otherTriangle.getAlphaCorner() &&
+//                this.getGammaCorner() == otherTriangle.getBetaCorner()){
+//            isSimilar = true;
+//        }
+//        else if (this.getAlphaCorner() == otherTriangle.getGammaCorner() &&
+//                this.getBetaCorner() == otherTriangle.getBetaCorner() &&
+//                this.getGammaCorner() == otherTriangle.getAlphaCorner()){
+//            isSimilar = true;
+//        }
+//        return isSimilar;
+//    }
+
+    public boolean isSimilar(Triangle otherTriangle){
+        boolean isSimilar = false;
+        if (Math.round(Math.toDegrees(this.getAlphaCorner())*100000.0)/100000.0 == Math.round(Math.toDegrees(otherTriangle.getAlphaCorner())*100000.0)/100000.0 &&
+                Math.round(Math.toDegrees(this.getBetaCorner())*100000.0)/100000.0 == Math.round(Math.toDegrees(otherTriangle.getBetaCorner())*100000.0)/100000.0 &&
+                Math.round(Math.toDegrees(this.getGammaCorner())*100000.0)/100000.0 == Math.round(Math.toDegrees(otherTriangle.getGammaCorner())*100000.0)/100000.0 ){
+            isSimilar = true;
+        }
+
+        if (Math.round(Math.toDegrees(this.getBetaCorner())*100000.0)/100000.0 == Math.round(Math.toDegrees(otherTriangle.getAlphaCorner())*100000.0)/100000.0 &&
+                Math.round(Math.toDegrees(this.getAlphaCorner())*100000.0)/100000.0 == Math.round(Math.toDegrees(otherTriangle.getBetaCorner())*100000.0)/100000.0 &&
+                Math.round(Math.toDegrees(this.getGammaCorner())*100000.0)/100000.0 == Math.round(Math.toDegrees(otherTriangle.getGammaCorner())*100000.0)/100000.0 ){
+            isSimilar = true;
+        }
+
+        return isSimilar;
+    }
+
+
     @Override
     public String toString() {
-        return "Triangle{" +
-                String.format("aSide= %.2f", this.aSide) +
-                String.format(", bSide= %.2f", this.bSide) +
-                String.format(", cSide= %.2f", this.cSide) +
-                String.format(", alphaCorner= %.2f", Math.toDegrees(this.alphaCorner))+
-                String.format(", betaCorner= %.2f", Math.toDegrees(this.betaCorner)) +
-                String.format(", gammaCorner= %.2f" , Math.toDegrees(this.gammaCorner)) +
-                '}';
+        String info = "";
+        if(this.isValid) {
+            info = "Triangle{" +
+                    String.format("sideA= %.2f", this.sideA) +
+                    String.format(", sideB= %.2f", this.sideB) +
+                    String.format(", sideC= %.2f", this.sideC) +
+                    String.format(", alphaCorner= %.2f", Math.toDegrees(this.getAlphaCorner())) +
+                    String.format(", betaCorner= %.2f", Math.toDegrees(this.getBetaCorner())) +
+                    String.format(", gammaCorner= %.2f", Math.toDegrees(this.getGammaCorner())) +
+                    '}';
+        }
+        else{
+            System.out.println("Неможливо вивести інформацію оскільки трикутник не існує.");
+        }
+        return info;
     }
 }
