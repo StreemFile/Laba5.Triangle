@@ -13,97 +13,97 @@ package com.company;
 
 public class TriangleService {
     public static Double getAlphaAngle(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return Math.acos((thisTriangle.getSideB() * thisTriangle.getSideB() + thisTriangle.getSideC() * thisTriangle.getSideC() -
                     thisTriangle.getSideA() * thisTriangle.getSideA()) / (2 * thisTriangle.getSideB() * thisTriangle.getSideC()));
-        } catch (NullPointerException e) {
+        } else{
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getBetaAngle(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return Math.acos((thisTriangle.getSideA() * thisTriangle.getSideA() + thisTriangle.getSideC() * thisTriangle.getSideC() -
                     thisTriangle.getSideB() * thisTriangle.getSideB()) / (2 * thisTriangle.getSideA() * thisTriangle.getSideC()));
-        } catch (NullPointerException e) {
+        } else  {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getGammaAngle(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return Math.acos((thisTriangle.getSideB() * thisTriangle.getSideB() + thisTriangle.getSideA() * thisTriangle.getSideA() -
                     thisTriangle.getSideC() * thisTriangle.getSideC()) / (2 * thisTriangle.getSideB() * thisTriangle.getSideA()));
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     private static Boolean isRight(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return Math.round(Math.toDegrees(getAlphaAngle(thisTriangle))) == 90 ||
                     Math.round(Math.toDegrees(getBetaAngle(thisTriangle))) == 90 ||
                     Math.round(Math.toDegrees(getGammaAngle(thisTriangle))) == 90;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Boolean isEquilateral(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return getAlphaAngle(thisTriangle) == getBetaAngle(thisTriangle) && getBetaAngle(thisTriangle) == getGammaAngle(thisTriangle);
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Boolean isIsosceles(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return getAlphaAngle(thisTriangle) == getBetaAngle(thisTriangle) || getBetaAngle(thisTriangle) == getGammaAngle(thisTriangle) || getAlphaAngle(thisTriangle) == getGammaAngle(thisTriangle);
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Boolean isScalene(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return getAlphaAngle(thisTriangle) != getBetaAngle(thisTriangle) && getBetaAngle(thisTriangle) != getGammaAngle(thisTriangle) && getAlphaAngle(thisTriangle) != getGammaAngle(thisTriangle);
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Boolean isAcute(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return Math.toDegrees(getAlphaAngle(thisTriangle)) < 90 &&
                     Math.toDegrees(getBetaAngle(thisTriangle)) < 90 &&
                     Math.toDegrees(getGammaAngle(thisTriangle)) < 90;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Boolean isObtuse(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             return Math.toDegrees(getAlphaAngle(thisTriangle)) > 90 ||
                     Math.toDegrees(getBetaAngle(thisTriangle)) > 90 ||
                     Math.toDegrees(getGammaAngle(thisTriangle)) > 90;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static void getTriangleType(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             System.out.print("Цей трикутник є ");
             if (isRight(thisTriangle)) {
                 System.out.print("прямокутним ");
@@ -121,81 +121,81 @@ public class TriangleService {
                 System.out.print("гострокутним трикутником.");
             }
             System.out.println();
-        } catch (NullPointerException e) {
+        } else{
             System.out.println("Трикутник не існує");
         }
     }
 
     public static Double getPerimeter(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             double perimeter;
             perimeter = thisTriangle.getSideA() + thisTriangle.getSideB() + thisTriangle.getSideC();
             return perimeter;
-        } catch (NullPointerException e) {
+        }else{
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getArea(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             double area;
             double halfPerimeter = getPerimeter(thisTriangle) / 2;
             area = Math.sqrt(halfPerimeter * (halfPerimeter - thisTriangle.getSideA()) *
                     (halfPerimeter - thisTriangle.getSideB()) * (halfPerimeter - thisTriangle.getSideC()));
             return area;
-        } catch (NullPointerException e) {
+        } else{
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getInscribedCircle(Triangle thisTriangle) {
-        try {
+        if(thisTriangle != null) {
             double inscribedCircle;
             inscribedCircle = getArea(thisTriangle) / (getPerimeter(thisTriangle) / 2);
             return inscribedCircle;
-        } catch (NullPointerException e) {
+        } else{
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getDescribedCircle(Triangle thisTriangle) {
-        try {
+        if (thisTriangle != null) {
             double describedCircle;
             describedCircle = (thisTriangle.getSideA() * thisTriangle.getSideB() * thisTriangle.getSideC()) / (4 * getArea(thisTriangle));
             return describedCircle;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
-    public static Double getMiddleLine(double neededSide, Triangle thisTriangle) {
+    public static Double getMiddleLine(double neededSide) {
         try {
             double middleLine;
             middleLine = neededSide / 2;
             return middleLine;
-        } catch (NullPointerException e) {
+        } catch (NullPointerException e){
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getHeight(double neededSide, Triangle thisTriangle) {
-        try {
+        if (thisTriangle != null) {
             double height;
             height = (2 * getArea(thisTriangle)) / neededSide;
             return height;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getMedian(double neededSide, Triangle thisTriangle) {
-        try {
+        if (thisTriangle != null) {
             double median;
 
             if (neededSide == thisTriangle.getSideA()) {
@@ -209,14 +209,14 @@ public class TriangleService {
                         2 * thisTriangle.getSideA() * thisTriangle.getSideA() - thisTriangle.getSideC() * thisTriangle.getSideC()) / 2;
             }
             return median;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static Double getBisector(double neededSide, Triangle thisTriangle) {
-        try {
+        if (thisTriangle != null) {
             double bisector;
 
             double halfPerimeter = getPerimeter(thisTriangle) / 2;
@@ -231,14 +231,14 @@ public class TriangleService {
                         (halfPerimeter - thisTriangle.getSideC()))) / (thisTriangle.getSideA() + thisTriangle.getSideB());
             }
             return bisector;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
             return null;
         }
     }
 
     public static void getTriangleInfo(Triangle thisTriangle) {
-        try {
+        if (thisTriangle != null) {
             String sidesAndAnglesInfo = thisTriangle.toString();
             System.out.println(sidesAndAnglesInfo);
             getTriangleType(thisTriangle);
@@ -246,9 +246,9 @@ public class TriangleService {
                     String.format("\nПлоща трикутника: %.2f", getArea(thisTriangle)) +
                     String.format("\nРадіус вписаного кола в трикутник: %.2f", getInscribedCircle(thisTriangle)) +
                     String.format("\nРадіус описаного кола в трикутник: %.2f", getDescribedCircle(thisTriangle)) +
-                    String.format("\nСередня лінія навпроти сторони a: %.2f", getMiddleLine(thisTriangle.getSideA(), thisTriangle)) +
-                    String.format("\nСередня лінія навпроти сторони b: %.2f", getMiddleLine(thisTriangle.getSideB(), thisTriangle)) +
-                    String.format("\nСередня лінія навпроти сторони c: %.2f", getMiddleLine(thisTriangle.getSideC(), thisTriangle)) +
+                    String.format("\nСередня лінія навпроти сторони a: %.2f", getMiddleLine(thisTriangle.getSideA())) +
+                    String.format("\nСередня лінія навпроти сторони b: %.2f", getMiddleLine(thisTriangle.getSideB())) +
+                    String.format("\nСередня лінія навпроти сторони c: %.2f", getMiddleLine(thisTriangle.getSideC())) +
                     String.format("\nВисота опущена з вершини а: %.2f", getHeight(thisTriangle.getSideA(), thisTriangle)) +
                     String.format("\nВисота опущена з вершини b: %.2f", getHeight(thisTriangle.getSideB(), thisTriangle)) +
                     String.format("\nВисота опущена з вершини а: %.2f", getHeight(thisTriangle.getSideC(), thisTriangle)) +
@@ -259,25 +259,25 @@ public class TriangleService {
                     String.format("\nБісектриса опущена з вершини b: %.2f", getBisector(thisTriangle.getSideB(), thisTriangle)) +
                     String.format("\nБісектриса опущена з вершини c: %.2f", getBisector(thisTriangle.getSideC(), thisTriangle)));
             System.out.println();
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Трикутник не існує");
         }
     }
 
     public static void getIsSimilar(Triangle thisTriangle, Triangle otherTriangle) {
-        try {
+        if (thisTriangle != null && otherTriangle != null) {
             if (isSimilar(thisTriangle, otherTriangle)) {
                 System.out.println("Трикутники подібні з відношенням " + getRatio(thisTriangle, otherTriangle));
             } else {
                 System.out.println("Трикутники не подібні.");
             }
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Один з трикутників не існує");
         }
     }
 
     public static String getRatio(Triangle thisTriangle, Triangle otherTriangle) {
-        try {
+        if (thisTriangle != null && otherTriangle != null) {
             double firstTriangleSide = thisTriangle.getSideC();
             double secondTriangleSide = otherTriangle.getSideC();
             while ((firstTriangleSide % 2 == 0 && secondTriangleSide % 2 == 0) ||
@@ -299,7 +299,7 @@ public class TriangleService {
                 }
             }
             return (int) firstTriangleSide + ":" + (int) secondTriangleSide;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Один з трикутників не існує");
             return null;
         }
@@ -307,7 +307,7 @@ public class TriangleService {
 
 
     public static Boolean isSimilar(Triangle thisTriangle, Triangle otherTriangle) {
-        try {
+        if (thisTriangle != null && otherTriangle != null) {
             boolean isSimilar = false;
             if (Math.round(Math.toDegrees(getAlphaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getAlphaAngle(otherTriangle)) * 1000.0) / 1000.0 &&
                     Math.round(Math.toDegrees(getBetaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getBetaAngle(otherTriangle)) * 1000.0) / 1000.0 &&
@@ -322,7 +322,7 @@ public class TriangleService {
             }
 
             return isSimilar;
-        } catch (NullPointerException e) {
+        } else {
             System.out.println("Один з трикутників не існує");
             return null;
         }
