@@ -3,22 +3,11 @@ package com.company;
 
 
 public class Main {
-
-    public static Triangle createTriangleThroughThreeSides(double sideA, double sideB, double sideC){
-        return new Triangle(sideA,sideB,sideC);
-    }
-    public static Triangle createTriangleThoughTwoSidesAndCorner(double sideB, double sideC,float alphaCorner){
-        return new Triangle(sideB,sideC,alphaCorner);
-    }
-    public static Triangle createTriangleThoughSideAndTwoCorners(double sideC,float alphaCorner,float betaCorner){
-        return new Triangle(sideC,alphaCorner,betaCorner);
-    }
-
-    public static void main(String[] args) {
-        Triangle myTriangle = createTriangleThoughSideAndTwoCorners(9,70,30);
-        myTriangle.getTriangleInfo();
-        Triangle myTriangle2 = createTriangleThoughSideAndTwoCorners(6,30,70);
-        myTriangle2.getTriangleInfo();
-        myTriangle2.getIsSimilar(myTriangle);
+    public static void main(String[] args){
+        Triangle myTriangle = TriangleFactory.createTriangleThoughSideAndTwoAngles(28,140,60);
+        TriangleService.getTriangleInfo(myTriangle);
+        Triangle myTriangle2 = TriangleFactory.createTriangleThoughSideAndTwoAngles(50,14,60);
+        TriangleService.getTriangleInfo(myTriangle2);
+        TriangleService.getIsSimilar(myTriangle2,myTriangle);
     }
 }
