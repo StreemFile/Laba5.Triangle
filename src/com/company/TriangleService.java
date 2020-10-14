@@ -44,9 +44,9 @@ public class TriangleService {
 
     private static Boolean isRight(Triangle thisTriangle) {
         if(thisTriangle != null) {
-            return Math.round(Math.toDegrees(getAlphaAngle(thisTriangle))) == 90 ||
-                    Math.round(Math.toDegrees(getBetaAngle(thisTriangle))) == 90 ||
-                    Math.round(Math.toDegrees(getGammaAngle(thisTriangle))) == 90;
+            return Math.round(Math.toDegrees(getAlphaAngle(thisTriangle))*1000.0)/1000.0 == 90 ||
+                    Math.round(Math.toDegrees(getBetaAngle(thisTriangle))*1000.0)/1000.0 == 90 ||
+                    Math.round(Math.toDegrees(getGammaAngle(thisTriangle))*1000.0)/1000.0 == 90;
         } else {
             System.out.println("Трикутник не існує");
             return null;
@@ -55,7 +55,7 @@ public class TriangleService {
 
     public static Boolean isEquilateral(Triangle thisTriangle) {
         if(thisTriangle != null) {
-            return getAlphaAngle(thisTriangle) == getBetaAngle(thisTriangle) && getBetaAngle(thisTriangle) == getGammaAngle(thisTriangle);
+            return Math.round(getAlphaAngle(thisTriangle)*1000.0)/1000.0 == Math.round(getBetaAngle(thisTriangle)*1000.0)/1000.0 && Math.round(getBetaAngle(thisTriangle)*1000.0)/1000.0 == Math.round(getGammaAngle(thisTriangle)*1000.0)/1000.0;
         } else {
             System.out.println("Трикутник не існує");
             return null;
@@ -64,7 +64,7 @@ public class TriangleService {
 
     public static Boolean isIsosceles(Triangle thisTriangle) {
         if(thisTriangle != null) {
-            return getAlphaAngle(thisTriangle) == getBetaAngle(thisTriangle) || getBetaAngle(thisTriangle) == getGammaAngle(thisTriangle) || getAlphaAngle(thisTriangle) == getGammaAngle(thisTriangle);
+            return Math.round(getAlphaAngle(thisTriangle)*10000.0)/10000.0 == Math.round(getBetaAngle(thisTriangle)*10000.0)/10000.0 || Math.round(getBetaAngle(thisTriangle)*10000.0)/10000.0 == Math.round(getGammaAngle(thisTriangle)*10000.0)/10000.0 || Math.round(getAlphaAngle(thisTriangle)*10000.0)/10000.0 == Math.round(getGammaAngle(thisTriangle)*10000.0)/10000.0;
         } else {
             System.out.println("Трикутник не існує");
             return null;
