@@ -2,6 +2,10 @@
 
 package com.company;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * Laba 5.TriangleService
@@ -264,65 +268,62 @@ public class TriangleService {
         }
     }
 
-    public static void getIsSimilar(Triangle thisTriangle, Triangle otherTriangle) {
-        if (thisTriangle != null && otherTriangle != null) {
-            if (isSimilar(thisTriangle, otherTriangle)) {
-                System.out.println("Трикутники подібні з відношенням " + getRatio(thisTriangle, otherTriangle));
-            } else {
-                System.out.println("Трикутники не подібні.");
-            }
-        } else {
-            System.out.println("Один з трикутників не існує");
-        }
-    }
-
-    public static String getRatio(Triangle thisTriangle, Triangle otherTriangle) {
-        if (thisTriangle != null && otherTriangle != null) {
-            double firstTriangleSide = thisTriangle.getSideC();
-            double secondTriangleSide = otherTriangle.getSideC();
-            while ((firstTriangleSide % 2 == 0 && secondTriangleSide % 2 == 0) ||
-                    (firstTriangleSide % 3 == 0 && secondTriangleSide % 3 == 0) ||
-                    (firstTriangleSide % 5 == 0 && secondTriangleSide % 5 == 0) ||
-                    (firstTriangleSide % 7 == 0 && secondTriangleSide % 7 == 0)) {
-                if (firstTriangleSide % 2 == 0 && secondTriangleSide % 2 == 0) {
-                    firstTriangleSide /= 2;
-                    secondTriangleSide /= 2;
-                } else if (firstTriangleSide % 3 == 0 && secondTriangleSide % 3 == 0) {
-                    firstTriangleSide /= 3;
-                    secondTriangleSide /= 3;
-                } else if (firstTriangleSide % 5 == 0 && secondTriangleSide % 5 == 0) {
-                    firstTriangleSide /= 5;
-                    secondTriangleSide /= 5;
-                } else {
-                    firstTriangleSide /= 7;
-                    secondTriangleSide /= 7;
-                }
-            }
-            return (int) firstTriangleSide + ":" + (int) secondTriangleSide;
-        } else {
-            System.out.println("Один з трикутників не існує");
-            return null;
-        }
-    }
+//    public static String getRatio(Triangle thisTriangle, Triangle otherTriangle) {
+//        if (thisTriangle != null && otherTriangle != null) {
+//            double firstTriangleSide = thisTriangle.getSideC();
+//            double secondTriangleSide = otherTriangle.getSideC();
+//            while ((firstTriangleSide % 2 == 0 && secondTriangleSide % 2 == 0) ||
+//                    (firstTriangleSide % 3 == 0 && secondTriangleSide % 3 == 0) ||
+//                    (firstTriangleSide % 5 == 0 && secondTriangleSide % 5 == 0) ||
+//                    (firstTriangleSide % 7 == 0 && secondTriangleSide % 7 == 0)) {
+//                if (firstTriangleSide % 2 == 0 && secondTriangleSide % 2 == 0) {
+//                    firstTriangleSide /= 2;
+//                    secondTriangleSide /= 2;
+//                } else if (firstTriangleSide % 3 == 0 && secondTriangleSide % 3 == 0) {
+//                    firstTriangleSide /= 3;
+//                    secondTriangleSide /= 3;
+//                } else if (firstTriangleSide % 5 == 0 && secondTriangleSide % 5 == 0) {
+//                    firstTriangleSide /= 5;
+//                    secondTriangleSide /= 5;
+//                } else {
+//                    firstTriangleSide /= 7;
+//                    secondTriangleSide /= 7;
+//                }
+//            }
+//            return (int) firstTriangleSide + ":" + (int) secondTriangleSide;
+//        } else {
+//            System.out.println("Один з трикутників не існує");
+//            return null;
+//        }
+//    }
 
 
     public static Boolean isSimilar(Triangle thisTriangle, Triangle otherTriangle) {
         if (thisTriangle != null && otherTriangle != null) {
             boolean isSimilar = false;
-            if (Math.round(Math.toDegrees(getAlphaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getAlphaAngle(otherTriangle)) * 1000.0) / 1000.0 &&
-                    Math.round(Math.toDegrees(getBetaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getBetaAngle(otherTriangle)) * 1000.0) / 1000.0 &&
-                    Math.round(Math.toDegrees(getGammaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getGammaAngle(otherTriangle)) * 1000.0) / 1000.0) {
-                isSimilar = true;
-            }
+            List<Double> thisTriangleAngles = new ArrayList<>();
+            thisTriangleAngles.add(Math.round(Math.toDegrees(TriangleService.getAlphaAngle(thisTriangle)) * 1000.0) / 1000.0);
+            thisTriangleAngles.add(Math.round(Math.toDegrees(TriangleService.getBetaAngle(thisTriangle)) * 1000.0) / 1000.0);
+            thisTriangleAngles.add(Math.round(Math.toDegrees(TriangleService.getGammaAngle(thisTriangle)) * 1000.0) / 1000.0);
+            Collections.sort(thisTriangleAngles);
 
-            if (Math.round(Math.toDegrees(getBetaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getAlphaAngle(otherTriangle)) * 1000.0) / 1000.0 &&
-                    Math.round(Math.toDegrees(getAlphaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getBetaAngle(otherTriangle)) * 1000.0) / 1000.0 &&
-                    Math.round(Math.toDegrees(getGammaAngle(thisTriangle)) * 1000.0) / 1000.0 == Math.round(Math.toDegrees(getGammaAngle(otherTriangle)) * 1000.0) / 1000.0) {
-                isSimilar = true;
-            }
+            List<Double> otherTriangleAngles = new ArrayList<>();
+            otherTriangleAngles.add(Math.round(Math.toDegrees(TriangleService.getAlphaAngle(otherTriangle)) * 1000.0) / 1000.0);
+            otherTriangleAngles.add(Math.round(Math.toDegrees(TriangleService.getBetaAngle(otherTriangle)) * 1000.0) / 1000.0);
+            otherTriangleAngles.add(Math.round(Math.toDegrees(TriangleService.getGammaAngle(otherTriangle)) * 1000.0) / 1000.0);
+            Collections.sort(otherTriangleAngles);
 
+            if (thisTriangleAngles.get(0).equals(otherTriangleAngles.get(0)) &&
+                    thisTriangleAngles.get(1).equals(otherTriangleAngles.get(1)) &&
+                    thisTriangleAngles.get(2).equals(otherTriangleAngles.get(2))) {
+                System.out.println("Трикутники подібні");
+                isSimilar = true;
+            } else {
+                System.out.println("Трикутники не подібні.");
+            }
             return isSimilar;
-        } else {
+        }
+        else {
             System.out.println("Один з трикутників не існує");
             return null;
         }

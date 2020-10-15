@@ -8,6 +8,6 @@ public class Main {
         TriangleService.getTriangleInfo(myTriangle);
         Triangle myTriangle2 = TriangleFactory.createTriangleThroughThreeSides(9,6,6);
         TriangleService.getTriangleInfo(myTriangle2);
-        TriangleService.getIsSimilar(myTriangle2,myTriangle);
+        TriangleService.isSimilar(myTriangle2,myTriangle);
     }
 }
